@@ -1,26 +1,25 @@
-<nav class="navbar navbar-expand-lg navbar-light sidebar vh-100 d-flex flex-column p-3"
-    style="width: 150px; position: fixed; top: 0; left: 0; background-color: blue;">
-    <div class="container-fluid flex-column">
-        <a class="navbar-brand mb-4" style="color: white;" href="#">Admin Panel</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav flex-column">
-                <!-- <li class="nav-item">
-                    <a class="nav-link" style="color: white;" href="view.php">View Users</a>
-                </li> -->
-                <li class="nav-item">
-                    <a class="nav-link" style="color: white;" href="employee.php"> Add Employee</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="color: white;" href="project.php">Add Project</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="color: white;" href="display_project.php">Display Project</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 250px; height:100vh">
+    <a href="display.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+            <use xlink:href="#bootstrap" />
+        </svg>
+        <span class="fs-4">Admin Panel</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="employee.php" class="nav-link active" aria-current="page">Add Employee</a>
+        </li>
+        <li>
+            <a href="project.php" class="nav-link text-white">
+                Add Project
+            </a>
+        </li>
+        <li>
+            <a href="display_project.php" class="nav-link text-white">
+                Display Project
+            </a>
+        </li>
+        
+    </ul>
+</div>

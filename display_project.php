@@ -11,25 +11,11 @@ include ('authentication.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Operation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <style>
-        body {
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column; /* Ensure the footer is at the bottom */
-        }
-        .sidebar {
-            height: 100vh;
-            position: sticky;
-            top: 0;
-            background-color: blue;
-        }
-        footer {
-            margin-top: auto; /* Push footer to the bottom */
-        }
-    </style>
+   
 </head>
 
 <body>
+<main class="d-flex g-2">
 <?php include('components/sidebar.php')?>
 
 <div class="flex-grow-1 p-4">
@@ -86,7 +72,7 @@ include ('authentication.php');
         </tbody>
     </table>
 </div>
-
+</main>
 <footer class="bg-light text-center text-lg-start mt-auto py-3">
     <div class="container">
         <div class="text-center">

@@ -56,28 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>CRUD Operation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<style>
-    body {
-        display: flex;
-        min-height: 100vh;
-        flex-direction: column;
-        /* Ensure the footer is at the bottom */
-    }
 
-    .sidebar {
-        height: 100vh;
-        position: sticky;
-        top: 0;
-        background-color: blue;
-    }
-
-    footer {
-        margin-top: auto;
-        /* Push footer to the bottom */
-    }
-</style>
 
 <body>
+     <main class="d-flex g-2">
     <?php include('components/sidebar.php') ?>
 
     <div class="container my-5" style="max-width: 600px;">
@@ -126,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </div>
-
+    </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
