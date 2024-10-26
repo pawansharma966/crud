@@ -2,18 +2,16 @@
 include ('authentication.php');
 include 'connect.php'; 
 
-$firstNameError = $lastNameError = $usernameError = $emailError = $mobileError = '';
+$firstNameError = $lastNameError =  $mobileError = '';
 $valid = true;
 
-$first_name = $last_name = $username = $email = $mobile = '';
+$first_name = $last_name = $mobile = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Fetching data from the form
     $first_name = isset($_POST['firstname']) ? $_POST['firstname'] : '';
     $last_name = isset($_POST['lastname']) ? $_POST['lastname'] : '';
-    $username = isset($_POST['username']) ? $_POST['username'] : '';
-    $email = isset($_POST['email']) ? $_POST['email'] : '';
     $mobile = isset($_POST['mobile']) ? $_POST['mobile'] : '';
 
     // First name validation
@@ -34,24 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $valid = false;
     }
 
-    // Username validation
-    if (empty($username)) {
-        $usernameError = "Username is required.";
-        $valid = false;
-    } elseif (!preg_match("/^[a-zA-Z]+$/", $username)) {
-        $usernameError = "Username should contain letters only.";
-        $valid = false;
-    }
-
-    // Email validation
-    if (empty($email)) {
-        $emailError = "Email is required.";
-        $valid = false;
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $emailError = "A valid email address is required.";
-        $valid = false;
-    }
-
     // Mobile validation
     if (empty($mobile)) {
         $mobileError = "Mobile number is required.";
@@ -63,8 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Insert data into the database if validation passes
     if ($valid) {
-        $sql = "INSERT INTO `crud` (first_name, last_name, username, email, mobile) 
-                VALUES ('$first_name', '$last_name', '$username', '$email', '$mobile')";
+        $sql = "INSERT INTO `employee` (emp_first_name, emp_last_name, emp_mobile) 
+                VALUES ('$first_name', '$last_name', '$mobile')";
         $result = mysqli_query($con, $sql);
         
         if ($result) {
@@ -102,10 +82,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </style>
 <body>
-     
 <?php include('components/sidebar.php')?>
+
 <div class="container my-5" style="max-width: 600px;">
-    <h2 class="text-center mb-4 text-primary">Add User</h2>
+    <h2 class="text-center mb-4 text-primary">Add Employee</h2>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="p-4 rounded shadow bg-light">
         
         <div class="mb-3">
@@ -120,20 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" name="lastname" class="form-control <?php echo !empty($lastNameError) ? 'is-invalid' : ''; ?>" 
                    id="lastname" value="<?php echo htmlspecialchars($last_name); ?>">
             <div class="invalid-feedback"><?php echo $lastNameError; ?></div>
-        </div>
-
-        <div class="mb-3">
-            <label for="username" class="form-label fw-bold">Username</label>
-            <input type="text" name="username" class="form-control <?php echo !empty($usernameError) ? 'is-invalid' : ''; ?>" 
-                   id="username" value="<?php echo htmlspecialchars($username); ?>">
-            <div class="invalid-feedback"><?php echo $usernameError; ?></div>
-        </div>
-
-        <div class="mb-3">
-            <label for="email" class="form-label fw-bold">Email</label>
-            <input type="email" name="email" class="form-control <?php echo !empty($emailError) ? 'is-invalid' : ''; ?>" 
-                   id="email" value="<?php echo htmlspecialchars($email); ?>">
-            <div class="invalid-feedback"><?php echo $emailError; ?></div>
         </div>
 
         <div class="mb-3">

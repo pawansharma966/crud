@@ -107,22 +107,7 @@ if (isset($_POST['submit'])) {
         }
     </style>
 <body>
- 
-<nav class="navbar navbar-expand-lg navbar-light sidebar vh-100 d-flex flex-column p-3" style="width: 150px; position: fixed; top: 0; left: 0; background-color: blue;">
-    <div class="container-fluid flex-column">
-        <a class="navbar-brand mb-4" style="color: white;" href="#">Admin Panel</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" style="color: white;" href="view.php">View Users</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php include('components/sidebar.php')?>
 
     <div class="container  my-5 mx-auto" style="margin-left: 180px; max-width: 700px;">
         <h2 class="text-center mb-4 text-primary">Update Record</h2>
