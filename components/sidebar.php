@@ -17,6 +17,9 @@
                 <li class="nav-item">
                     <a class="nav-link" style="color: white;" href="project.php">Add Project</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="display_project.php">Display Project</a>
+                </li>
             </ul>
         </div>
     </div>

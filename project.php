@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Insert data into the database if validation passes
-    if ($valid) {
+    if ($valid) { 
         $sql = "INSERT INTO `project` (project_name, description, emp_id) 
                 VALUES ('$project_name', '$description', '$employee')";
         $result = mysqli_query($con, $sql);
