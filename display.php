@@ -23,7 +23,7 @@ include('authentication.php');
                             <a class="nav-link text-light" href="user.php">Add User</a>
                         </button>
                         <button class="m-lg-3 btn btn-secondary" style="margin-left: 30px;">
-                            <a class="nav-link text-light" href="logout.php">Logout</a>
+                            <a class="nav-link text-light" href="logout.php" onclick="return confirmLogout()">Logout</a>
                         </button>
                     </div>
 
@@ -79,7 +79,7 @@ include('authentication.php');
                 </div>
             
     </main>
-    <footer class="bg-light text-center text-lg-start mt-auto py-3">
+    <!-- <footer class="bg-light text-center text-lg-start mt-auto py-3">
         <div class="container">
             <div class="text-center">
                 <span class="text-muted">© 2024 Your Company. All Rights Reserved.</span>
@@ -90,7 +90,7 @@ include('authentication.php');
                 <a href="#" class="text-muted">Contact Us</a>
             </div>
         </div>
-    </footer>
+    </footer> -->
    
     <script>
         function confirmDelete(id) {
@@ -100,7 +100,11 @@ include('authentication.php');
                 return false;
             }
         }
+        function confirmLogout() {
+    return confirm("Are you sure you want to logout?");
+}
     </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-COUVpBL9i5aOVP/59LG90u7IPU5QH+0y8i/mEo+uRuC1yPj0k84hZ7G8/2CZmB4Z"

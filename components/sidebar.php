@@ -7,19 +7,33 @@
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="employee.php" class="nav-link active" aria-current="page">Add Employee</a>
+    <li class="nav-item">
+            <a href="dashboard.php" class="nav-link text-white" aria-current="page">Dashboard</a>
         </li>
-        <li>
+        <li class="nav-item">
+            <a href="displayemp.php" class="nav-link text-white" aria-current="page">Employee</a>
+        </li>
+        <!-- <li>
             <a href="project.php" class="nav-link text-white">
-                Add Project
+            Project
+            </a>
+        </li> -->
+        <li>
+            <a href="display_project.php" class="nav-link text-white">
+             Project
             </a>
         </li>
         <li>
-            <a href="display_project.php" class="nav-link text-white">
-                Display Project
+            <a href="logout.php" onclick="return confirmLogout()" class="nav-link text-white">
+                Logout
             </a>
         </li>
         
     </ul>
 </div>
+<script>
+      
+        function confirmLogout() {
+    return confirm("Are you sure you want to logout?");
+}
+    </script>

@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = mysqli_query($con, $sql);
         
         if ($result) {
-            header('location:display.php'); // Redirect to a display page after successful insertion
+            header('location:displayemp.php'); // Redirect to a display page after successful insertion
             exit(); 
         } else {
             die(mysqli_error($con));
@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php include('components/sidebar.php')?>
 
 <div class="container my-5" style="max-width: 600px;">
-    <h2 class="text-center mb-4 text-primary">Add Employee</h2>
+    <h2 class="text-center mb-4 text-primary"> Employee</h2>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="p-4 rounded shadow bg-light">
         
         <div class="mb-3">

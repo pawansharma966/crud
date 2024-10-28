@@ -18,7 +18,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($project_name)) {
         $projectNameError = "Project name is required.";
         $valid = false;
-    } 
+    }  elseif (!preg_match("/^[a-zA-Z ]+$/", $project_name)) {
+        $projectNameError = "A valid project name is required (letters only).";
+        $valid = false;
+    }
 
     // description validation
     if (empty($description)) {
@@ -38,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = mysqli_query($con, $sql);
 
         if ($result) {
-            header('location:display.php'); // Redirect to a display page after successful insertion
+            header('location:display_project.php'); // Redirect to a display page after successful insertion
             exit();
         } else {
             die(mysqli_error($con));
@@ -63,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include('components/sidebar.php') ?>
 
     <div class="container my-5" style="max-width: 600px;">
-        <h2 class="text-center mb-4 text-primary">Add Project</h2>
+        <h2 class="text-center mb-4 text-primary">Project</h2>
         <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>"
             class="p-4 rounded shadow bg-light">
 
