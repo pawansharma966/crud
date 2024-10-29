@@ -12,6 +12,7 @@ if ($row) {
     $first_name = $row['emp_first_name'];
     $last_name = $row['emp_last_name'];
     $mobile = $row['emp_mobile'];
+    $currentImage = $row['file']; // Assuming 'file' column holds image path
 } else {
     die("Record not found.");
 }
@@ -49,8 +50,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $valid = false;
     }
 
-    if ($valid) { 
-        $sql = "UPDATE `employee` SET emp_first_name='$first_name', emp_last_name='$last_name', emp_mobile='$mobile' WHERE id=$project_id";
+    // Handle file upload if a new file is provided
+    if ($valid) {
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = 'uploads/';
+            $imageName = basename($_FILES['image']['name']);
+            $imagePath = $uploadDir . $imageName;
+
+            // Move uploaded file to the specified directory
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $imagePath)) {
+                // If an old image exists, delete it
+                if ($currentImage && file_exists($currentImage)) {
+                    unlink($currentImage);
+                }
+            } else {
+                die("Failed to upload the image.");
+            }
+        } else {
+            $imagePath = $currentImage; // Keep the old image if no new image is uploaded
+        }
+
+        $sql = "UPDATE `employee` SET emp_first_name='$first_name', emp_last_name='$last_name', emp_mobile='$mobile', file='$imagePath' WHERE id=$project_id";
         $result = mysqli_query($con, $sql);
 
         if ($result) {
@@ -78,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="container my-5" style="max-width: 600px;">
             <h2 class="text-center mb-4 text-primary">Update Employee</h2>
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . '?updateid=' . $project_id; ?>" class="p-4 rounded shadow bg-light">
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . '?updateid=' . $project_id; ?>" enctype="multipart/form-data" class="p-4 rounded shadow bg-light">
                 
                 <div class="mb-3">
                     <label for="first_name" class="form-label fw-bold">First Name</label>
@@ -96,6 +116,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="mobile" class="form-label fw-bold">Mobile</label>
                     <input type="text" name="mobile" class="form-control <?php echo !empty($mobileError) ? 'is-invalid' : ''; ?>" id="mobile" value="<?php echo htmlspecialchars($mobile); ?>">
                     <div class="invalid-feedback"><?php echo $mobileError; ?></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label fw-bold">Profile Image</label>
+                    <input type="file" name="image" class="form-control" id="image">
+                    <?php if ($currentImage && file_exists($currentImage)) { ?>
+                        <img src="<?php echo $currentImage; ?>" alt="Employee Image" class="img-thumbnail mt-2" style="width: 100px; height: 100px;">
+                    <?php } ?>
                 </div>
 
                 <div class="d-grid">

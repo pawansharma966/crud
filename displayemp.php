@@ -30,6 +30,7 @@ include 'authentication.php';
                         <th scope="col">First Name</th>
                         <th scope="col">Last Name</th>
                         <th scope="col">Mobile</th>
+                        <th scope="col">Image</th>
                         <th scope="col">Operation</th>
                     </tr>
                 </thead>
@@ -45,12 +46,23 @@ include 'authentication.php';
                             $first_name = isset($row['emp_first_name']) ? $row['emp_first_name'] : 'N/A';
                             $last_name = isset($row['emp_last_name']) ? $row['emp_last_name'] : 'N/A';
                             $mobile = isset($row['emp_mobile']) ? $row['emp_mobile'] : 'N/A';
+                            $imagePath = isset($row['file']) ? $row['file'] : '';
 
                             echo '<tr class="text-center">
                                 <td>' . $si_no . '</td>
                                 <td>' . htmlspecialchars($first_name) . '</td>
                                 <td>' . htmlspecialchars($last_name) . '</td>
                                 <td>' . htmlspecialchars($mobile) . '</td>
+                                <td>';
+                            
+                            // Display the image if the path exists
+                            if ($imagePath && file_exists($imagePath)) {
+                                echo '<img src="' . htmlspecialchars($imagePath) . '" alt="Employee Image" style="width: 50px; height: 50px; object-fit: cover;">';
+                            } else {
+                                echo 'No Image';
+                            }
+
+                            echo '</td>
                                 <td>
                                     <a href="updateemp.php?updateid=' . $id . '" class="btn btn-primary btn-sm me-2">Update</a>
                                     <button class="btn btn-danger btn-sm" onclick="confirmDelete(' . $id . ')">Delete</button>
