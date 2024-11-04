@@ -15,7 +15,7 @@ include 'authentication.php';
 <body>
 <main class="d-flex g-2">
     <?php include('components/sidebar.php') ?>
-    <div class="flex-grow-1 p-4">
+    <div class="flex-grow-1 p-2">
         <div class="d-flex flex-wrap justify-content-center mx-lg-5">
             <button class="m-lg-3 btn btn-primary" style="margin-right: 40px;">
                 <a class="nav-link text-light" href="employee.php">Add Employee</a>

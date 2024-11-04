@@ -65,8 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      <main class="d-flex g-2">
     <?php include('components/sidebar.php') ?>
 
-    <div class="container my-5" style="max-width: 600px;">
-        <h2 class="text-center mb-4 text-primary">Project</h2>
+    <div class="container my-2" style="max-width: 600px;">
+        <h2 class="text-center mb-2 text-primary">Project</h2>
         <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>"
             class="p-4 rounded shadow bg-light">
 

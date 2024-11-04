@@ -13,7 +13,7 @@ $totalProject = $countRow['total_project'] ?? 0; // Using null coalescing operat
 $countQuery = "SELECT COUNT(id) AS total_employee FROM `employee`";
 $countResult = mysqli_query($con, $countQuery);
 $countRow = mysqli_fetch_assoc($countResult);
-$totalEmployee = $countRow['total_employee'] ?? 0; // Using null coalescing operator to handle undefined index
+$totalEmployee = $countRow['total_employee'] ?? 0; 
 
 ?>
 
@@ -30,8 +30,8 @@ $totalEmployee = $countRow['total_employee'] ?? 0; // Using null coalescing oper
 <main class="d-flex g-2">
 <?php include('components/sidebar.php')?>
 
-<div class="container my-5" style="max-width: 400px;">
-    <!-- Card displaying total employee count -->
+<div class="container my-5" style="max-width: 370px;">
+    
     <div class="card text-center mb-4">
         <div class="card-body">
             <h5 class="card-title">Total Projects</h5>
@@ -40,8 +40,8 @@ $totalEmployee = $countRow['total_employee'] ?? 0; // Using null coalescing oper
     </div>
 
 </div>
-<div class="container my-5" style="max-width: 400px;">
-    <!-- Card displaying total employee count -->
+<div class="container my-5" style="max-width: 370px;">
+   
     <div class="card text-center mb-4">
         <div class="card-body">
             <h5 class="card-title">Total Employees</h5>

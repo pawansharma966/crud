@@ -22,9 +22,9 @@ include('authentication.php');
                         <button class="m-lg-3 btn btn-primary" style="margin-right: 40px;">
                             <a class="nav-link text-light" href="user.php">Add User</a>
                         </button>
-                        <button class="m-lg-3 btn btn-secondary" style="margin-left: 30px;">
+                        <!-- <button class="m-lg-3 btn btn-secondary" style="margin-left: 30px;">
                             <a class="nav-link text-light" href="logout.php" onclick="return confirmLogout()">Logout</a>
-                        </button>
+                        </button> -->
                     </div>
 
                     <table class="table table-bordered my-5 border mx-auto rounded table-light">
@@ -100,9 +100,9 @@ include('authentication.php');
                 return false;
             }
         }
-        function confirmLogout() {
-    return confirm("Are you sure you want to logout?");
-}
+    //     function confirmLogout() {
+    // return confirm("Are you sure you want to logout?");
+// }
     </script>
 
 

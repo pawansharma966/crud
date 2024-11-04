@@ -40,27 +40,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // File upload validation
-    // if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
-    //     $fileType = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
-    //     if (in_array($fileType, ['jpg', 'jpeg', 'png', 'gif'])) {
-    //         // Define upload directory and file path
-    //         $filePath = 'uploads/' . basename($_FILES['file']['name']);
-    //         if (!is_dir('uploads')) {
-    //             mkdir('uploads', 0777, true); // Create uploads directory if not exists
-    //         }
-    //         // Move uploaded file to the designated directory
-    //         if (!move_uploaded_file($_FILES['file']['tmp_name'], $filePath)) {
-    //             $fileError = "Failed to upload image.";
-    //             $valid = false;
-    //         }
-    //     } else {
-    //         $fileError = "Only JPG, JPEG, PNG, and GIF files are allowed.";
-    //         $valid = false;
-    //     }
-    // } else {
-    //     $fileError = "Please upload an image.";
-    //     $valid = false;
-    // }
+    if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+        $fileType = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
+        if (in_array($fileType, ['jpg', 'jpeg', 'png', 'gif'])) {
+            // Define upload directory and file path
+            $filePath = 'uploads/' . basename($_FILES['file']['name']);
+            if (!is_dir('uploads')) {
+                mkdir('uploads', 0777, true); // Create uploads directory if not exists
+            }                        
+            // Move uploaded file to the designated directory
+            if (!move_uploaded_file($_FILES['file']['tmp_name'], $filePath)) {
+                $fileError = "Failed to upload image.";
+                $valid = false;
+            }
+        } else {
+            $fileError = "Only JPG, JPEG, PNG, and GIF files are allowed.";
+            $valid = false;
+        }
+    } else {
+        $fileError = "Please upload an image.";
+        $valid = false;
+    }
 
     // Insert data into the database if validation passes
     if ($valid) {
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Employee Registration</title>
+    <title>Employee </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -91,8 +91,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <main class="d-flex g-2">
 <?php include('components/sidebar.php')?>
 
-<div class="container my-5" style="max-width: 600px;">
-    <h2 class="text-center mb-4 text-primary">Employee Registration</h2>
+<div class="container my-2" style="max-width: 600px;">
+    <h2 class="text-center mb-2 text-primary">Employee </h2>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" 
           enctype="multipart/form-data" class="p-4 rounded shadow bg-light">
         
@@ -121,6 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="file" class="form-label fw-bold">Upload Image</label>
             <input type="file" name="file" class="form-control <?php echo !empty($fileError) ? 'is-invalid' : ''; ?>" id="file" required>
             <div class="invalid-feedback"><?php echo $fileError; ?></div>
+         
         </div>
 
         <div class="d-grid">
