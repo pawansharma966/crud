@@ -2,57 +2,78 @@
 include('authentication.php');
 include 'connect.php';
 
-$id = $_GET['updateid'];
-$sql = "SELECT * FROM `client` WHERE id = $id"; 
-$result = mysqli_query($con, $sql);
-$row = mysqli_fetch_assoc($result);
+$id = $_GET['updateid'] ?? '';
+if (!$id) {
+    die("Invalid ID.");
+}
 
-if ($row) {
-    $name = $row['name'];
-    $email = $row['email'];
-    $phone = $row['phone'];
-    $project = explode(',', $row['projects_id']); // assuming `projects_id` is stored as comma-separated
-} else {
+
+$sql = "SELECT * FROM `client` WHERE id = ?";
+$stmt = $con->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+
+if (!$row) {
     die("Record not found.");
 }
+
+$name = $row['name'];
+$email = $row['email'];
+$phone = $row['phone'];
+$project = json_decode($row['projects_id'], true) ?: []; 
+
 
 $NameError = $emailError = $phoneError = $projectError = '';
 $valid = true;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = isset($_POST['name']) ? $_POST['name'] : '';
-    $email = isset($_POST['email']) ? $_POST['email'] : '';
-    $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
-    $project = isset($_POST['project']) ? $_POST['project'] : [];
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $phone = trim($_POST['phone'] ?? '');
+    $project = $_POST['project'] ?? [];
 
+   
     if (empty($name)) {
-        $NameError = " Name is required.";
+        $NameError = "Name is required.";
         $valid = false;
     } elseif (!preg_match("/^[a-zA-Z ]+$/", $name)) {
         $NameError = "A valid name is required (letters only).";
         $valid = false;
     }
 
+  
     if (empty($email)) {
         $emailError = "Email is required.";
         $valid = false;
-    }
-
-    if (empty($phone)) {
-        $phoneError = "Phone is required.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailError = "Invalid email format.";
         $valid = false;
     }
 
-    if ($valid) { 
-        $projects_id = implode(',', $project); // convert array to comma-separated string
-        $sql = "UPDATE `client` SET name='$name', email='$email', phone='$phone', projects_id='$projects_id' WHERE id=$id";
-        $result = mysqli_query($con, $sql);
+    
+    if (empty($phone)) {
+        $phoneError = "Phone is required.";
+        $valid = false;
+    } elseif (!preg_match("/^[0-9]{10}$/", $phone)) {
+        $phoneError = "Invalid phone number.";
+        $valid = false;
+    }
 
-        if ($result) {
-            header('location:displayclient.php'); 
+    if ($valid) {
+        $projects_id = json_encode($project);
+
+        
+        $sql = "UPDATE `client` SET name = ?, email = ?, phone = ?, projects_id = ? WHERE id = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("ssssi", $name, $email, $phone, $projects_id, $id);
+        
+        if ($stmt->execute()) {
+            header('Location: displayclient.php');
             exit();
         } else {
-            die(mysqli_error($con));
+            die("Update failed: " . $stmt->error);
         }
     }
 }
@@ -71,34 +92,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php include('components/sidebar.php') ?>
 
         <div class="container my-2" style="max-width: 600px;">
-            <h2 class="text-center mb-2 text-primary">Update</h2>
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . '?updateid=' . $id; ?>"
-                class="p-4 rounded shadow bg-light">
+            <h2 class="text-center mb-2 text-primary">Update Client</h2>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . '?updateid=' . $id; ?>" class="p-4 rounded shadow bg-light">
 
+             
                 <div class="mb-3">
-                    <label for="name" class="form-label fw-bold"> Name</label>
-                    <input type="text" name="name"
-                        class="form-control <?php echo !empty($NameError) ? 'is-invalid' : ''; ?>" id="name"
-                        value="<?php echo htmlspecialchars($name); ?>">
+                    <label for="name" class="form-label fw-bold">Name</label>
+                    <input type="text" name="name" class="form-control <?php echo !empty($NameError) ? 'is-invalid' : ''; ?>" id="name" value="<?php echo htmlspecialchars($name); ?>">
                     <div class="invalid-feedback"><?php echo $NameError; ?></div>
                 </div>
 
+           
                 <div class="mb-3">
                     <label for="email" class="form-label fw-bold">Email</label>
-                    <input type="text" name="email"
-                        class="form-control <?php echo !empty($emailError) ? 'is-invalid' : ''; ?>" id="email"
-                        value="<?php echo htmlspecialchars($email); ?>">
+                    <input type="email" name="email" class="form-control <?php echo !empty($emailError) ? 'is-invalid' : ''; ?>" id="email" value="<?php echo htmlspecialchars($email); ?>">
                     <div class="invalid-feedback"><?php echo $emailError; ?></div>
                 </div>
 
+            
                 <div class="mb-3">
-                    <label for="phone" class="form-label fw-bold"> Mobile</label>
-                    <input type="text" name="phone"
-                        class="form-control <?php echo !empty($phoneError) ? 'is-invalid' : ''; ?>" id="phone"
-                        value="<?php echo htmlspecialchars($phone); ?>">
+                    <label for="phone" class="form-label fw-bold">Mobile</label>
+                    <input type="text" name="phone" class="form-control <?php echo !empty($phoneError) ? 'is-invalid' : ''; ?>" id="phone" value="<?php echo htmlspecialchars($phone); ?>">
                     <div class="invalid-feedback"><?php echo $phoneError; ?></div>
                 </div>
 
+           
                 <div class="mb-3">
                     <label for="project" class="form-label fw-bold">Select Project</label>
                     <select name="project[]" id="project" class="form-control <?php echo !empty($projectError) ? 'is-invalid' : ''; ?>" multiple>
@@ -115,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="invalid-feedback"><?php echo $projectError; ?></div>
                 </div>
 
-                <!-- Submit Button -->
+             
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary fw-bold" name="submit">Update</button>
                 </div>

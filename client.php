@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($valid) {
-        $projectJSON = json_encode($project); // Convert the project array to JSON format
+        $projectJSON = json_encode($project); 
 
         $sql = "INSERT INTO `client` (`name`, `email`, `phone`, `projects_id`) VALUES ('$name', '$email', '$phone', '$projectJSON')";
         $result = mysqli_query($con, $sql);

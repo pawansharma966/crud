@@ -37,52 +37,49 @@ include 'authentication.php';
                     </thead>
                     <tbody>
                         <?php
+                        // Fetch clients and their associated projects
                         $sql = "SELECT * FROM `client`";
-                        // -- JOIN project ON client.projects_id = client.projects_id";
-                        
                         $result = mysqli_query($con, $sql);
 
                         if ($result) {
                             $si_no = 1;
                             while ($row = mysqli_fetch_assoc($result)) {
                                 $id = $row['id'];
-                                $name = isset($row['name']) ? $row['name'] : 'N/A';
-                                $email = isset($row['email']) ? $row['email'] : 'N/A';
-                                $phone = isset($row['phone']) ? $row['phone'] : 'N/A';
+                                $name = $row['name'] ?? 'N/A';
+                                $email = $row['email'] ?? 'N/A';
+                                $phone = $row['phone'] ?? 'N/A';
 
-                                $project_ids = explode(',', $row['projects_id']);
+                                // Decode the JSON data of project IDs
+                                $project_ids = json_decode($row['projects_id'], true);
                                 $project_names = [];
 
-                                // Loop through each project ID and fetch the name from the `project` table
-                                foreach ($project_ids as $project_id) {
-                                    // Query to fetch the project name by ID
-                                    $query = "SELECT project_name FROM project WHERE project_id = ?";
+                                if (is_array($project_ids)) {
+                                    $placeholders = implode(',', array_fill(0, count($project_ids), '?'));
+                                    $query = "SELECT project_name FROM project WHERE project_id IN ($placeholders)";
+                                  
                                     $stmt = $con->prepare($query);
-                                    $stmt->bind_param("i", $project_id);
+                                    $stmt->bind_param(str_repeat('i', count($project_ids)), ...$project_ids);
                                     $stmt->execute();
-                                    $result = $stmt->get_result();
+                                    $project_result = $stmt->get_result();
 
-                                    if ($result->num_rows > 0) {
-                                        $project = $result->fetch_assoc();
-                                        $project_names[] = $project['project_name'];
+                                   
+                                    while ($project_row = $project_result->fetch_assoc()) {
+                                        $project_names[] = $project_row['project_name'];
                                     }
                                 }
 
-                                // Display each project name
                                 echo '<tr class="text-center">
-    <td>' . $si_no . '</td>
-    <td>' . htmlspecialchars($name) . '</td>
-    <td>' . htmlspecialchars($email) . '</td>
-    <td>' . htmlspecialchars($phone) . '</td>
-    <td>' . implode('<br>', array_map('htmlspecialchars', $project_names)) . '</td>
-    <td>
-        <a href="updateclient.php?updateid=' . $id . '" class="btn btn-primary btn-sm me-2">Update</a>
-        <button class="btn btn-danger btn-sm" onclick="confirmDelete(' . $id . ')">Delete</button>
-    </td>
-</tr>';
-
+                                    <td>' . $si_no . '</td>
+                                    <td>' . htmlspecialchars($name) . '</td>
+                                    <td>' . htmlspecialchars($email) . '</td>
+                                    <td>' . htmlspecialchars($phone) . '</td>
+                                    <td>' . implode('<br>', array_map('htmlspecialchars', $project_names)) . '</td>
+                                    <td>
+                                        <a href="updateclient.php?updateid=' . $id . '" class="btn btn-primary btn-sm me-2">Update</a>
+                                        <button class="btn btn-danger btn-sm" onclick="confirmDelete(' . $id . ')">Delete</button>
+                                    </td>
+                                </tr>';
                                 $si_no++;
-
                             }
                         }
                         ?>
@@ -107,14 +104,4 @@ include 'authentication.php';
 
 </html>
 
--- JOIN project ON client.projects_id = client.projects_id";
 
-
-
-
-// SQL query to get client data along with their associated projects
-$sql = "SELECT client.id, client.name, client.email, client.phone,
-GROUP_CONCAT(project.project_name SEPARATOR ', ') AS project_names
-FROM client
-LEFT JOIN project ON client.projects_id = project.project_id
-GROUP BY client.id";
